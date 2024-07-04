@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: ${GPU_DRIVER:-nvidia}  # Use NVIDIA by default, can be overridden to 'amd'
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all  # For NVIDIA GPUs
+      - ROCR_VISIBLE_DEVICES=all    # For AMD GPUs
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+
+  ollama-webui:
+    build:
+      context: .
+      args:
+        OLLAMA_API_BASE_URL: '/ollama/api'
+      dockerfile: Dockerfile
+    image: ollama-webui:latest
+    container_name: ollama-webui
+    depends_on:
+      - ollama
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_API_BASE_URL=http://ollama:11434/api
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+
+volumes:
+  ollama:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
