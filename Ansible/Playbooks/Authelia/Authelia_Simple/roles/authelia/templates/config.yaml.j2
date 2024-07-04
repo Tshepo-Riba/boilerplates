@@ -1,0 +1,9 @@
+# Example Authelia configuration template
+authelia:
+  log_level: info
+  jwt_secret: "{{ authelia_jwt_secret }}"
+  ...
+storage:
+  local:
+    path: /etc/authelia/users_database.db
+...

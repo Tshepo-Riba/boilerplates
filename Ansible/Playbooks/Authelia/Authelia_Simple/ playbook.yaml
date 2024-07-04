@@ -1,0 +1,6 @@
+- name: Install and configure Authelia
+  hosts: authelia_servers
+  become: true
+
+  roles:
+    - authelia

@@ -1,0 +1,6 @@
+- name: Deploy Authelia with Docker Compose
+  command: docker-compose up -d
+  args:
+    chdir: /etc/authelia
+  notify: 
+    - authelia service

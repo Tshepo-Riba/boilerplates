@@ -1,0 +1,8 @@
+- name: Install Docker and Docker Compose
+  include_tasks: install_docker.yml
+
+- name: Configure Authelia
+  include_tasks: configure_authelia.yml
+
+- name: Deploy Authelia using Docker Compose
+  include_tasks: deploy_authelia.yml

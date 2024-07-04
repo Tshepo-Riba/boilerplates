@@ -1,0 +1,39 @@
+
+---
+- name: Install and configure Portainer
+  hosts: all  # Replace with your target hosts or group
+  become: yes  # Ensure privilege escalation is enabled if needed
+
+  tasks:
+    - name: Install Docker
+      become: yes
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install pip3
+      become: yes
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker python module
+      become: yes
+      pip:
+        name: docker
+        state: present
+
+    - name: Create docker volume for Portainer
+      docker_volume:
+        name: portainer_data
+
+    - name: Launch Portainer container
+      docker_container:
+        name: portainer
+        image: portainer/portainer
+        restart_policy: always
+        ports:
+          - "9000:9000"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - portainer_data:/data

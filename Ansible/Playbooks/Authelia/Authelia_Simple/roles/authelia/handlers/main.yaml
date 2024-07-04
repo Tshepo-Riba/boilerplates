@@ -1,0 +1,9 @@
+- name: docker service
+  service:
+    name: docker
+    state: started
+
+- name: authelia service
+  systemd:
+    name: authelia
+    state: restarted

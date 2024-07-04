@@ -1,0 +1,9 @@
+version: '3'
+services:
+  authelia:
+    image: authelia/authelia:latest
+    volumes:
+      - /etc/authelia:/etc/authelia
+    ports:
+      - "9091:9091"
+    restart: always

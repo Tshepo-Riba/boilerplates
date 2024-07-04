@@ -1,0 +1,9 @@
+- name: Template Authelia configuration file
+  template:
+    src: config.yaml.j2
+    dest: /etc/authelia/config.yaml
+    owner: root
+    group: root
+    mode: 0644
+  notify: 
+    - authelia service
